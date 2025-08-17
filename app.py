@@ -57,7 +57,6 @@ llm = ChatOllama(
     temperature=0.2,
     top_k=20,
     top_p=0.5,
-    max_tokens=80
 )
 
 # Create the prompt template
@@ -100,6 +99,7 @@ def create_gradio_interface():
         "What's your background?",
         "How did you get into tech?",
         "Where have you lived?",
+
 
     ]
 
