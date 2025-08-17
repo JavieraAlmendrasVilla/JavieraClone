@@ -3,7 +3,7 @@ run = "python app.py"
 
 [nix]
 channel = "stable-25_05"
-packages = ["bash", "ffmpeg-full"]
+packages = ["bash", "ffmpeg-full", "libxcrypt"]
 
 [[ports]]
 localPort = 7860
