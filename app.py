@@ -56,8 +56,7 @@ llm = ChatOllama(
     model="llama3.2:1b",
     temperature=0.2,
     top_k=20,
-    top_p=0.5,
-    max_tokens=80
+    top_p=0.5
 )
 
 # Create the prompt template
