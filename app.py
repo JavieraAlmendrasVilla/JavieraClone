@@ -4,19 +4,15 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_groq import ChatGroq
-from pydantic import SecretStr
-
+import json
 import gradio as gr
 
-JAVIERA_PROFILE = os.environ.get("JAVIERA_PROFILE", "")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+JAVIERA_PROFILE = os.environ.get("JAVIERA_PROFILE")
+API_KEY = os.environ.get("API_KEY")
+SYSTEM_PROMPT= os.environ.get("SYSTEM_PROMPT")
 
 # Privacy restrictions remain the same
-RESTRICTED_TOPICS = [
-    "password", "bank", "telephone", "phone", "sexual orientation", "race",
-    "disease", "family planning", "health information", "religion", "politics",
-    "personal relationships", "romantic", "dating", "medical history", "API keys"
-]
+RESTRICTED_TOPICS = json.loads(os.environ["RESTRICTED_TOPICS"])
 
 
 def check_privacy_restrictions(question: str) -> bool:
@@ -26,39 +22,14 @@ def check_privacy_restrictions(question: str) -> bool:
 
 
 # Natural conversation prompt template
-NATURAL_TEMPLATE = """You are Javiera. You're having a conversation with someone who's asking about you, likely a 
-recruiter or someone interested in your professional background.
-
-Answer professionally but with personality, as if you're speaking directly to them but keep your answers 
-concise. Share relevant information from your profile, but make it feel like a genuine conversation. You can be 
-enthusiastic about your experiences, show personality, and tell (short) stories when appropriate. 
-IMPORTANT: DO NOT Answer questions about passwords, bank information, cards, secrets, credentials, accounts, telephone numbers, sexual orientation, 
-race, diseases, family, family planning, health information, religion, politics, API keys, relatives, family members, 
-children, parents, siblings, friends or any other personal information not in your profile. 
-Here's your complete profile information: {profile}
-
-Remember: 
-- Answer in maximum 2 sentence (500 tokens) with personality most professional and relevant information from your profile
-- Speak in first person ("I am", "I did", "My experience") 
-- Be conversational and natural 
-- Show personality and enthusiasm where appropriate 
-- Only answer based on the information in your profile 
-- If asked about something not in your profile, say you'd prefer not to share that information or that it's not 
-something you typically discuss in professional contexts 
-- If they want to know more about me redirect them to my LinkedIn profile 
-https://www.linkedin.com/in/javiera-almendras-villa/ 
-- Answer in the same language as the question
-
-Question: {question}
-
-Your response:"""
+NATURAL_TEMPLATE = SYSTEM_PROMPT
 
 # Initialize LLM with optimized parameters
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
     temperature=0.5,
-    api_key=GROQ_API_KEY
+    api_key=API_KEY
 
 )
 
@@ -118,19 +89,17 @@ def create_gradio_interface():
                 """
             )
 
-
-    
-
-
             with gr.Row():
                 with gr.Column(scale=3):
-                    chatbot = gr.Chatbot(label="Chat")
+                    chatbot = gr.Chatbot(label="Chat",type="messages")
                     msg = gr.Textbox(
                         label="Your Question",
                         placeholder="Hi! Ask me anything about my background, experience, or journey...",
                         lines=2
                     )
-                    clear = gr.Button("Clear Chat")
+                    with gr.Row():
+                        send = gr.Button("Send", variant="primary")  # purple
+                        clear = gr.Button("Clear Chat", variant="secondary")  # gray
 
                 with gr.Column(scale=1):
                     gr.Markdown("### Example Questions")
@@ -141,10 +110,14 @@ def create_gradio_interface():
 
             def respond(message, history):
                 response = chatbot_response(message)
-                history = history + [(message, response)]
+                history = history + [
+                    {"role": "user", "content": message},
+                    {"role": "assistant", "content": response}
+                ]
                 return history, ""
 
             msg.submit(respond, [msg, chatbot], [chatbot, msg])
+            send.click(respond, [msg, chatbot], [chatbot, msg])
             clear.click(lambda: None, None, chatbot)
 
             # Make example buttons submit the message
@@ -158,6 +131,6 @@ def create_gradio_interface():
 if __name__ == "__main__":
     app = create_gradio_interface()
     app.launch(
-        share=True,  # Set to True if you want a public link
+        share=False,  # Set to True if you want a public link
         show_error=True
     )
