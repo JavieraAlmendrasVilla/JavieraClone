@@ -2,7 +2,7 @@
 
 This project is a conversational AI chatbot built with **LangChain**, **Groq’s Chat API**, and **Gradio**, designed to simulate a professional chat with "Javiera". The chatbot provides natural, human-like responses while enforcing privacy restrictions on sensitive topics. 💬
 
-https://raw.githubusercontent.com/JavieraAlmendrasVilla/JavieraClone/main/chabot.jpg
+![App](https://raw.githubusercontent.com/JavieraAlmendrasVilla/JavieraClone/main/chabot.jpg)
 ---
 
 ## ✨ Features
