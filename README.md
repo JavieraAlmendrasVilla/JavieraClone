@@ -6,21 +6,21 @@ This project is a conversational AI chatbot built with **LangChain**, **Groq’s
 
 ## ✨ Features
 
-- **Natural language conversation** 💡: Uses a custom system prompt to provide coherent and context-aware responses.
-- **Privacy protection** 🔒: Blocks questions on predefined restricted topics.
-- **Interactive interface** 🖥️: Built with Gradio for a user-friendly web-based chat experience.
-- **Example questions** ❓: Provides pre-defined prompts to guide users.
-- **Lightweight LCEL chain** ⚙️: Simple LangChain chain for prompt handling without complex context management.
+- **Natural language conversation**: Uses a custom system prompt to provide coherent and context-aware responses.
+- **Privacy protection** : Blocks questions on predefined restricted topics.
+- **Interactive interface** : Built with Gradio for a user-friendly web-based chat experience.
+- **Example questions** : Provides pre-defined prompts to guide users.
+- **Lightweight LCEL chain** : Simple LangChain chain for prompt handling without complex context management.
 
 ---
 
 ## 🛠️ Technologies
 
-- **Python 3.11+ 🐍**
-- **LangChain Core 📚**
-- **LangChain Groq 🤖**
-- **Gradio 🎨**
-- **Groq LLM (`llama-3.1-8b-instant`) 🦙**
+- **Python 3.11+**
+- **LangChain Core**
+- **LangChain Groq**
+- **Gradio**
+- **Groq LLM (`llama-3.1-8b-instant`)**
 
 ---
 
@@ -30,9 +30,9 @@ You can use the hosted version of the chatbot:
 
 🔗 [Run Javiera AI Chatbot on Hugging Face Spaces](https://huggingface.co/spaces/javiialmendras/Javiera)
 
-- 🖱️ The Gradio interface is fully functional in the browser.
-- 🚫 No local setup required.
-- 💬 Just type your question and interact with the bot directly.
+- The Gradio interface is fully functional in the browser.
+- No local setup required.
+- Just type your question and interact with the bot directly.
 
 ---
 
